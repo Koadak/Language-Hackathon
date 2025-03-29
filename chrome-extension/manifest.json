@@ -1,13 +1,16 @@
 {
   "manifest_version": 3,
-  "name": "My Extension",
+  "name": "YouTube Subtitle Helper",
   "version": "1.0",
+  "permissions": ["scripting", "activeTab"],
+  "content_scripts": [
+    {
+      "matches": ["*://www.youtube.com/*"],
+      "js": ["content.js"],
+      "css": ["styles.css"]
+    }
+  ],
   "action": {
     "default_popup": "popup.html"
-  },
-  "background": {
-    "service_worker": "background.js"
-  },
-  "permissions": ["storage", "tabs"]
+  }
 }
-
