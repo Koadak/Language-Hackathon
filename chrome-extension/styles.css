@@ -3,11 +3,44 @@
   top: 100px;
   right: 20px;
   z-index: 9999;
-  background: rgba(0, 0, 0, 0.85);
+  background: rgba(0, 0, 0, 0.9);
   color: white;
   font-size: 14px;
-  padding: 10px;
-  border-radius: 8px;
-  max-width: 300px;
+  padding: 12px;
+  border-radius: 10px;
+  max-width: 320px;
+  line-height: 1.5;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
 }
 
+#subtitle-box {
+  margin-bottom: 8px;
+  min-height: 80px;
+}
+
+#subtitle-box strong {
+  color: #ffffff;
+}
+
+#subtitle-box span {
+  color: #cccccc;
+}
+
+#subtitle-controls {
+  display: flex;
+  justify-content: space-between;
+}
+
+#subtitle-controls button {
+  background: #444;
+  color: white;
+  border: none;
+  padding: 4px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 13px;
+}
+
+#subtitle-controls button:hover {
+  background: #666;
+}
