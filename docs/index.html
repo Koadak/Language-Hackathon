@@ -8,43 +8,42 @@
 </head>
 <body>
   <div class="container">
-    <header>
-      <h1>Vocabulary Flashcards</h1>
-    </header>
 
     <main>
-      <section id="flashcard-section">
-        <div id="flashcard">
-          <p id="card-content">Click 'Next' to start!</p>
-          <button id="reveal-button">Reveal</button>
-        </div>
-        <button id="next-button">Next</button>
-      </section>
-
       <section id="deck-section">
-        <h2>Decks</h2>
+        <p>Decks</p>
         <ul id="deck-list">
           </ul>
-        <button id="create-deck-button">Create Deck</button>
+        <!-- <div class="deck-controls">
+          <button id="delete-deck-button">Delete Deck</button>
+          <button id="edit-deck-button">Edit Deck</button>
+          <button id="add-deck-button">Add Deck</button>
+        </div> -->
       </section>
 
-      <section id="card-creation-section">
-        <h2>Create Flashcard</h2>
-        <form id="card-form">
-          <label for="term">Term:</label>
-          <input type="text" id="term" name="term" required>
-
-          <label for="definition">Definition:</label>
-          <textarea id="definition" name="definition" required></textarea>
-
-          <label for="deck-select">Add to Deck:</label>
-          <select id="deck-select" name="deck-select">
-            <option value="">None</option>
-            </select>
-
-          <button type="submit">Add Card</button>
-        </form>
+      <section id="flashcard-section">
+        <div id="flashcard">
+          <p id="flashcard-content">Click the card to reveal the definition</p>
+        </div>
+        <div class="flashcard-controls">
+          <button id="prev-button">Prev</button>
+          <button id="delete-button">Delete</button>
+          <button id="deck-addition-button">Add</button>
+          <button id="next-button">Next</button>
+        </div>
       </section>
+
+      <section id="user-section">
+        <div id="user-info">
+          <p id="user-name">Name: <span id="name-value"></span></p>
+          <p id="user-email">Email: <span id="email-value"></span></p>
+        </div>
+        <div class="user-controls">
+          <button id="logout-button">Logout</button>
+          <button id="changepwd-button">Change Password</button>
+        </div>
+      </section>
+
     </main>
   </div>
   <script src="script.js"></script>
