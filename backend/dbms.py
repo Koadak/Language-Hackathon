@@ -2,7 +2,7 @@ import psycopg2
 
 # connection establishment
 conn = psycopg2.connect(
-database="postgres",
+database="languagehelper",
 	user='postgres',
 	host='localhost',
     password='postgres',
@@ -15,11 +15,9 @@ conn.autocommit = True
 cursor = conn.cursor()
 
 # query to create a database 
-sql = ''' CREATE TABLE users(
-			user_id int,
-            user_name varchar(255),
-            password varchar(255)
-            )'''
+sql = '''INSERT INTO userInformation VALUES(
+        1, 'test_user', 'test_password'
+        )'''
 
 # executing above query
 cursor.execute(sql)
