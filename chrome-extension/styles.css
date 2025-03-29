@@ -1,46 +1,85 @@
+/* Floating Panel */
 #floating-subtitle-ui {
   position: fixed;
-  top: 100px;
+  top: 20px;
   right: 20px;
-  z-index: 9999;
-  background: rgba(0, 0, 0, 0.9);
+  background: rgba(0, 0, 0, 0.85);
   color: white;
-  font-size: 14px;
   padding: 12px;
-  border-radius: 10px;
-  max-width: 320px;
-  line-height: 1.5;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+  border-radius: 12px;
+  z-index: 9999;
+  max-width: 360px;
+  cursor: grab;
+  font-family: sans-serif;
+  font-size: 14px;
 }
 
+/* Collapse Button */
+#collapse-btn {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  background: transparent;
+  color: white;
+  border: none;
+  font-size: 18px;
+  cursor: pointer;
+}
+
+/* Subtitle Box */
 #subtitle-box {
-  margin-bottom: 8px;
-  min-height: 80px;
+  margin-bottom: 10px;
+  line-height: 1.5em;
 }
 
-#subtitle-box strong {
-  color: #ffffff;
-}
-
-#subtitle-box span {
-  color: #cccccc;
-}
-
+/* Controls */
 #subtitle-controls {
   display: flex;
   justify-content: space-between;
+  gap: 6px;
 }
 
 #subtitle-controls button {
   background: #444;
-  color: white;
   border: none;
-  padding: 4px 10px;
-  border-radius: 6px;
+  color: white;
+  padding: 6px 10px;
+  border-radius: 4px;
   cursor: pointer;
-  font-size: 13px;
+  font-size: 12px;
 }
 
 #subtitle-controls button:hover {
   background: #666;
 }
+
+/* Selectors */
+#subtitle-selectors {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+#subtitle-selectors label {
+  display: flex;
+  flex-direction: column;
+  font-weight: bold;
+}
+
+#subtitle-selectors select {
+  margin-top: 4px;
+  padding: 4px;
+  border-radius: 4px;
+  border: none;
+}
+
+/* Word-level highlighting */
+.hover-highlight {
+  transition: background 0.2s;
+  cursor: pointer;
+}
+
+.hover-highlight:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+

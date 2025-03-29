@@ -219,6 +219,14 @@ function createTrackSelectionUI(tracks, savedPosition = null) {
   });
 }
 
+function highlightWords(line) {
+  return line.split(/(\s+)/).map(word => {
+    if (word.trim() === '') return word;
+    return `<span class="hover-highlight">${word}</span>`;
+  }).join('');
+}
+
+
 function createTranslationUI() {
   const existing = document.getElementById("floating-subtitle-ui");
   if (existing) existing.remove();
@@ -297,11 +305,12 @@ function renderSubtitles() {
   const visiblePairs = subtitlePairs.slice(currentIndex, currentIndex + MAX_VISIBLE_LINES);
 
   const html = visiblePairs
-    .map(pair => `<div><strong>${pair.line1}</strong><br><span>${pair.line2}</span></div>`)
+    .map(pair => `<div><strong>${highlightWords(pair.line1)}</strong><br><span>${highlightWords(pair.line2)}</span></div>`)
     .join("<br>");
 
   box.innerHTML = html;
 }
+
 
 function scrollToLive() {
   const video = document.querySelector("video");
