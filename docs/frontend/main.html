@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vocabulary Flashcards</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>Vocabulary Flashcards</h1>
+    </header>
+
+    <main>
+      <section id="flashcard-section">
+        <div id="flashcard">
+          <p id="card-content">Click 'Next' to start!</p>
+          <button id="reveal-button">Reveal</button>
+        </div>
+        <button id="next-button">Next</button>
+      </section>
+
+      <section id="deck-section">
+        <h2>Decks</h2>
+        <ul id="deck-list">
+          </ul>
+        <button id="create-deck-button">Create Deck</button>
+      </section>
+
+      <section id="card-creation-section">
+        <h2>Create Flashcard</h2>
+        <form id="card-form">
+          <label for="term">Term:</label>
+          <input type="text" id="term" name="term" required>
+
+          <label for="definition">Definition:</label>
+          <textarea id="definition" name="definition" required></textarea>
+
+          <label for="deck-select">Add to Deck:</label>
+          <select id="deck-select" name="deck-select">
+            <option value="">None</option>
+            </select>
+
+          <button type="submit">Add Card</button>
+        </form>
+      </section>
+    </main>
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>
