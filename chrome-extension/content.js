@@ -64,6 +64,7 @@ function matchByTimestamps(track1Subs, track2Subs) {
     const t1 = track1Subs[i];
     let bestT2 = "";
 
+    // Look ahead to match the most appropriate subtitle in track 2
     while (
       t2Index < track2Subs.length - 1 &&
       track2Subs[t2Index + 1].start <= t1.start
@@ -73,7 +74,7 @@ function matchByTimestamps(track1Subs, track2Subs) {
 
     if (
       t2Index < track2Subs.length &&
-      Math.abs(track2Subs[t2Index].start - t1.start) < 1.5
+      Math.abs(track2Subs[t2Index].start - t1.start) < 2 // Allowing a wider range for timestamp mismatch
     ) {
       bestT2 = track2Subs[t2Index].text;
       lastT2 = bestT2;
@@ -138,7 +139,7 @@ function toggleCollapse(container) {
     body.style.display = isCollapsed ? "block" : "none";
     if (controls) controls.style.display = isCollapsed ? "flex" : "none";
     toggleBtn.textContent = isCollapsed ? "−" : "+";
-});
+  });
 }
 
 function createTrackSelectionUI(tracks, savedPosition = null) {
@@ -222,10 +223,40 @@ function createTrackSelectionUI(tracks, savedPosition = null) {
 function highlightWords(line) {
   return line.split(/(\s+)/).map(word => {
     if (word.trim() === '') return word;
-    return `<span class="hover-highlight">${word}</span>`;
+    return `<span class="hover-highlight clickable-word" data-word="${word}">${word}</span>`;
   }).join('');
 }
 
+async function translateWord(word) {
+  const response = await fetch(`https://api.mymemory.translated.net/get?q=${word}&langpair=kor|en`);
+  const data = await response.json();
+  return data.responseData.translatedText;
+}
+
+document.addEventListener('mouseover', async (event) => {
+  if (event.target.classList.contains('hover-highlight')) {
+    const word = event.target.getAttribute('data-word');
+    const translation = await translateWord(word);
+
+    // Create or update a tooltip with the translation
+    let tooltip = document.getElementById('translation-tooltip');
+    if (!tooltip) {
+      tooltip = document.createElement('div');
+      tooltip.id = 'translation-tooltip';
+      tooltip.style.position = 'absolute';
+      tooltip.style.background = 'rgba(0, 0, 0, 0.7)';
+      tooltip.style.color = 'white';
+      tooltip.style.padding = '5px';
+      tooltip.style.borderRadius = '5px';
+      tooltip.style.zIndex = '9999';
+      document.body.appendChild(tooltip);
+    }
+
+    tooltip.textContent = translation;
+    tooltip.style.left = `${event.pageX + 10}px`;
+    tooltip.style.top = `${event.pageY + 10}px`;
+  }
+});
 
 function createTranslationUI() {
   const existing = document.getElementById("floating-subtitle-ui");
@@ -247,6 +278,11 @@ function createTranslationUI() {
 
   container.innerHTML = `
     <div id="subtitle-box">Loading subtitles...</div>
+    <div id="translation-box">
+      <input type="text" id="word-input" placeholder="Enter word to translate" style="width: 100%; padding: 5px;">
+      <button id="translate-btn" style="width: 100%; padding: 5px; margin-top: 10px;">Translate</button>
+      <div id="translation-output" style="margin-top: 10px; font-size: 14px;"></div>
+    </div>
     <div id="subtitle-controls">
       <button id="back-btn">⬅️ Back</button>
       <button id="prev-btn">⏪ Prev</button>
@@ -257,6 +293,25 @@ function createTranslationUI() {
   document.body.appendChild(container);
   makeDraggable(container);
   toggleCollapse(container);
+
+  document.addEventListener('click', (event) => {
+    if (event.target.classList.contains('clickable-word')) {
+      const word = event.target.getAttribute('data-word');
+      document.getElementById('word-input').value = word; // Insert the clicked word into the input box
+      translateWord(word); // Optionally, trigger translation immediately
+    }
+  });
+
+  // Event listener for translation button
+  document.getElementById("translate-btn").addEventListener("click", async () => {
+    const word = document.getElementById("word-input").value.trim();
+    if (word) {
+      const translation = await translateWord(word);
+      document.getElementById("translation-output").textContent = `Translation: ${translation}`;
+    } else {
+      document.getElementById("translation-output").textContent = "Please enter a word to translate.";
+    }
+  });
 
   document.getElementById("back-btn").addEventListener("click", () => {
     const container = document.getElementById("floating-subtitle-ui");
@@ -276,7 +331,7 @@ function createTranslationUI() {
       subtitlePairs = [{ line1: '', line2: '⚠️ An error occurred.' }];
       renderSubtitles();
     });
-});
+  });
 
   document.getElementById("prev-btn").addEventListener("click", () => {
     liveMode = false;
@@ -311,7 +366,6 @@ function renderSubtitles() {
   box.innerHTML = html;
 }
 
-
 function scrollToLive() {
   const video = document.querySelector("video");
   if (!video) return;
@@ -322,6 +376,7 @@ function scrollToLive() {
     return !next || (pair.start <= currentTime && currentTime < next.start);
   });
 
+  // Ensure that subtitles stay in sync by adjusting the index slightly
   if (liveIndex !== -1) {
     currentIndex = Math.max(0, liveIndex - Math.floor(MAX_VISIBLE_LINES / 2));
     renderSubtitles();
@@ -353,12 +408,12 @@ async function loadSubtitles(showSelector = false) {
     }
 
     let savedPosition = { top: "100px", left: "20px" };
-const container = document.getElementById("floating-subtitle-ui");
-if (container) {
-  savedPosition.top = container.style.top;
-  savedPosition.left = container.style.left;
-}
-createTrackSelectionUI(tracks, savedPosition);
+    const container = document.getElementById("floating-subtitle-ui");
+    if (container) {
+      savedPosition.top = container.style.top;
+      savedPosition.left = container.style.left;
+    }
+    createTrackSelectionUI(tracks, savedPosition);
   } catch (err) {
     console.error("❌ Error loading subtitles:", err);
     subtitlePairs = [{ line1: "", line2: "⚠️ An error occurred." }];
@@ -366,7 +421,7 @@ createTrackSelectionUI(tracks, savedPosition);
   }
 
   currentIndex = 0;
-  startLiveSync();
+  startLiveSync(); // Start subtitle sync
 }
 
 let previousUrl = location.href;
