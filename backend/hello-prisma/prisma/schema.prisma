@@ -3,7 +3,7 @@
 
 generator client {
   provider = "prisma-client-js"
-  output = "../generated/prisma"
+  output = "../node_modules/.prisma/client"
 }
 
 datasource db {
@@ -14,7 +14,9 @@ datasource db {
 model User {
   user_id  Int  @id @default(autoincrement())
   email String  @unique
-  password String @db.VarChar(50)
+  password String 
+  decks Decks[]
+  flash_cards FlashCards[]
 }
 
 model Decks {
@@ -23,6 +25,7 @@ model Decks {
    user_id Int
    deck_name String
    isManaged Boolean @default(true)
+   flash_cards FlashCards[]
 }
 
 model FlashCards {
